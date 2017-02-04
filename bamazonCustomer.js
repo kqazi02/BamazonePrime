@@ -127,7 +127,7 @@ function sale(item, quantity) {
 		}
 
 		else {
-			
+			console.log("Sorry! We do not have enough quantity");
 			process.exit();
 
 		}
