@@ -1,0 +1,12 @@
+CREATE DATABASE IF NOT EXISTS bamazon;
+
+USE bamazon;
+
+CREATE TABLE IF NOT EXISTS products(
+
+	item_id INTEGER(10) UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY
+	,product_name VARCHAR(50) NOT NULL
+	,department_name VARCHAR(30) NOT NULL
+    ,price FLOAT(10) NOT NULL
+    ,stock_quantity INTEGER(5) NOT NULL);
+    

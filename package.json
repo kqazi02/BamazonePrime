@@ -1,0 +1,25 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "An app for customer to purchase items from the store.",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kqazi02/BamazonePrime.git"
+  },
+  "author": "Kashan Ali Qazi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kqazi02/BamazonePrime/issues"
+  },
+  "homepage": "https://github.com/kqazi02/BamazonePrime#readme",
+  "dependencies": {
+    "cli-table": "^0.3.1",
+    "inquirer": "^3.0.1",
+    "mysql": "^2.13.0"
+  },
+  "devDependencies": {}
+}
