@@ -78,7 +78,7 @@ function shop () {
 			var qtyToSell = parseInt(userInput.quantityReqd.trim());
 
 			// pass the user input to sale function.
-			var saleComplete = sale(toSell, qtyToSell);
+			sale(toSell, qtyToSell);
 
 		}); // inquirer callback ends here.
 
@@ -91,17 +91,46 @@ function shop () {
 // ==================================================================================
 
 
-//sale function takes user input and runs the number through database and updates
-//the database if sale is completed.
+//sale function takes user input and runs the number through database, and determines
+//if the store has quantity of product in inventory as specified by the user.
 
 function sale(item, quantity) {
 
-	connection.query("SELECT stock_quantity FROM products WHERE ?", 
+	console.log(item);
+
+	connection.query ("SELECT * FROM products WHERE ?", 
 	{ item_id : item }, function(err, res){
 
 		if (err) throw err;
 
-		console.log(typeof res[0].stock_quantity);
-	});
+		if (res[0].stock_quantity >= quantity) {
+
+			newQuantity = res[0].stock_quantity - quantity;
+			var totalPrice = res[0].price * quantity;
+
+			connection.query ("UPDATE products SET ? WHERE ?", 
+			[
+				{ stock_quantity : newQuantity},
+				{ item_id: item }
+			], function (err, res){
+
+				if (err) throw err;
+
+				else {
+
+					console.log ("Your Total will be $" + totalPrice);
+					process.exit();
+				}
+
+			}); // callback for Update query ends here
+
+		}
+
+		else {
+			
+			process.exit();
+
+		}
+	 });
 
 }
