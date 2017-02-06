@@ -115,7 +115,7 @@ function sale(item, quantity) {
 
 			// Subtract the specified quantity from the stock
 			newQuantity = res[0].stock_quantity - quantity;
-			var totalPrice = res[0].price * quantity;
+			var totalPrice = (res[0].price * quantity).toFixed(2);
 
 			// update the database with new quantity
 			connection.query ("UPDATE products SET ? WHERE ?", 
