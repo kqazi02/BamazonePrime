@@ -15,6 +15,7 @@ var connection = mysql.createConnection ({
 
 });
 
+// establishing connection to the database
 connection.connect(function(error){
 
 	if (error) throw error;
@@ -32,6 +33,7 @@ function shop () {
 		
 		if (error) throw error;
 
+		//creating a table to print out a product list neatly
 		var table = new Table({
 
 			head: [ "ID", "Product", "Department", "Price ($)", "Qty"],
@@ -39,8 +41,10 @@ function shop () {
 		
 		}); 
 		
+		// Loop through the entries in the database . . .
 		for (var i = 0; i < results.length; i++){
 
+			// . . . and push them to the created table
 			table.push(
 
 				[
@@ -55,7 +59,9 @@ function shop () {
 
 		} // for loop ends here
 
+		// print out the table on the screen
 		console.log(table.toString());
+
 		//Ask the user for input
 		inquirer.prompt([
 
@@ -74,6 +80,7 @@ function shop () {
 		// inquirer prompt ends here, and callback function begins	
 		]).then(function(userInput){
 
+			// typecast user input to an integer
 			var toSell = parseInt(userInput.productID.trim());
 			var qtyToSell = parseInt(userInput.quantityReqd.trim());
 
@@ -96,18 +103,21 @@ function shop () {
 
 function sale(item, quantity) {
 
-	console.log(item);
-
+	// pull the item specified by the user, from the database.
 	connection.query ("SELECT * FROM products WHERE ?", 
 	{ item_id : item }, function(err, res){
 
 		if (err) throw err;
 
+		// compare the user specified quantiy to quantity in stock, if quantity in stock
+		// is greater than the user specified quantity
 		if (res[0].stock_quantity >= quantity) {
 
+			// Subtract the specified quantity from the stock
 			newQuantity = res[0].stock_quantity - quantity;
 			var totalPrice = res[0].price * quantity;
 
+			// update the database with new quantity
 			connection.query ("UPDATE products SET ? WHERE ?", 
 			[
 				{ stock_quantity : newQuantity},
@@ -118,7 +128,10 @@ function sale(item, quantity) {
 
 				else {
 
+					//print total price for the user
 					console.log ("Your Total will be $" + totalPrice);
+					
+					//escort the user out of the store
 					process.exit();
 				}
 
@@ -127,10 +140,13 @@ function sale(item, quantity) {
 		}
 
 		else {
+
+			// Inform the user that we do not have enough quantity if quantity specified
+			// by the user is greater than quantity in stock.
 			console.log("Sorry! We do not have enough quantity");
 			process.exit();
 
-		}
-	 });
+		} // else statement
+	 }); // initial query for the item ends here
 
-}
+} // sale function ends here.
